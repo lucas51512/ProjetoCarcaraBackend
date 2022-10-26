@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTipoFuncaoDto } from './dto/create-tipo-funcao.dto';
 import { UpdateTipoFuncaoDto } from './dto/update-tipo-funcao.dto';
 
 @Injectable()
 export class TipoFuncaoService {
-  create(createTipoFuncaoDto: CreateTipoFuncaoDto) {
-    return 'This action adds a new tipoFuncao';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createTipoFuncaoDto: CreateTipoFuncaoDto) {
+    return this.prisma.tipoFuncao.create({
+      data: {
+        ...createTipoFuncaoDto
+      }
+    });
   }
 
-  findAll() {
-    return `This action returns all tipoFuncao`;
+  async findAll() {
+    return this.prisma.tipoFuncao.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tipoFuncao`;
+  async findOne(id: number) {
+    return await this.prisma.tipoFuncao.findUnique({
+      where: {
+        idTipo: id
+      }
+    });
   }
 
-  update(id: number, updateTipoFuncaoDto: UpdateTipoFuncaoDto) {
-    return `This action updates a #${id} tipoFuncao`;
+  async update(id: number, data: UpdateTipoFuncaoDto) {
+    return await this.prisma.tipoAtividade.update({
+      where: {
+        idTipoAtividade: id
+      },
+      data
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tipoFuncao`;
+  async remove(id: number) {
+    return this.prisma.tipoAtividade.delete({
+      where: {
+        idTipoAtividade: id
+      }
+    });
   }
 }

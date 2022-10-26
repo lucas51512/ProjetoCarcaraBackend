@@ -7,9 +7,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class PessoaService {
   constructor(private readonly prisma: PrismaService){}
 
-  async create(createPessoaDto: CreatePessoaDto) {
+  async create(idUsuario: number, createPessoaDto: CreatePessoaDto) {
     return await this.prisma.pessoa.create({
       data: {
+        idUsuario,
         ...createPessoaDto
       }
     });
@@ -38,6 +39,6 @@ export class PessoaService {
     await this.prisma.pessoa.delete({
       where: { idPessoa: id }
     });
-    return `This action removes a #${id} pessoa`;
+    return `Pessoa ${id} removida`;
   }
 }

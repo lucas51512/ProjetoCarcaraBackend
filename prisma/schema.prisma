@@ -82,12 +82,12 @@ model Pessoa {
   fonePessoa          String
   emailPessoa         String
   // empresa             Empresa @relation(fields: [idEmpresa], references: [idEmpresa])
-  idEmpresa           Int @unique()
+  idEmpresa          Int? @unique()
   usuario             Usuario?
-  idUsuario           Int @unique
+  idUsuario           Int? @unique
   // pessoaSkill         PessoaSkill?
   // particiantes        Participantes @relation(fields: [idParticipantes], references: [idPessoa])
-  idParticipantes     Int @unique
+  idParticipantes     Int? @unique
   // funcao              Funcao?
   // integrante          Integrantes?
 }
@@ -145,8 +145,8 @@ model Usuario {
   emailUsuario      String @unique
   hash              String
   
-  pessoa            Pessoa? @relation(fields: [pessoaId], references: [idPessoa])
-  pessoaId          Int? @unique
+  pessoa            Pessoa? @relation(fields: [pessoaIdFk], references: [idPessoa])
+  pessoaIdFk          Int? @unique
 
   @@map("Usuarios")
 }

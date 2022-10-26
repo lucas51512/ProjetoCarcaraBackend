@@ -1,1 +1,5 @@
-export class CreatePessoaSkillDto {}
+export class CreatePessoaSkillDto {
+    idPessoaSkill: number;
+    idPessoa: number;
+    idSkill: number;
+}

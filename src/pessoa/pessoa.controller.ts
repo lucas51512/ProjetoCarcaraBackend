@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('pessoa')
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
   @Post()
-  create(@Body() createPessoaDto: CreatePessoaDto) {
-    return this.pessoaService.create(createPessoaDto);
+  create(@GetUser('idUsuario') idUsuarioFk:number, @Body() createPessoaDto: CreatePessoaDto) {
+    return this.pessoaService.create(idUsuarioFk, createPessoaDto);
   }
 
   @Get()

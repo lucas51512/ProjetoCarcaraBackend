@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePessoaSkillDto } from './dto/create-pessoa-skill.dto';
 import { UpdatePessoaSkillDto } from './dto/update-pessoa-skill.dto';
 
 @Injectable()
 export class PessoaSkillService {
-  create(createPessoaSkillDto: CreatePessoaSkillDto) {
-    return 'This action adds a new pessoaSkill';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createPessoaSkillDto: CreatePessoaSkillDto) {
+   return await this.prisma.pessoaSkill.create({
+    data:{
+      ...createPessoaSkillDto,
+    }
+   });
   }
 
-  findAll() {
-    return `This action returns all pessoaSkill`;
+  async findAll() {
+    return await this.prisma.pessoaSkill.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pessoaSkill`;
+  async findOne(id: number) {
+    return await this.prisma.pessoaSkill.findUnique({
+      where: {
+        idPessoaSkill: id
+      }
+    });
   }
 
-  update(id: number, updatePessoaSkillDto: UpdatePessoaSkillDto) {
-    return `This action updates a #${id} pessoaSkill`;
+  async update(id: number, data: UpdatePessoaSkillDto) {
+    return await this.prisma.pessoaSkill.update({
+      where: {
+        idPessoaSkill: id,
+      },
+      data
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pessoaSkill`;
+  async remove(id: number) {
+    return this.prisma.pessoaSkill.delete({where:{
+      idPessoaSkill: id
+    }});
   }
 }

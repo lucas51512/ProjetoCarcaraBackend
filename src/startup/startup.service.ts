@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateStartupDto } from './dto/create-startup.dto';
 import { UpdateStartupDto } from './dto/update-startup.dto';
 
 @Injectable()
 export class StartupService {
-  create(createStartupDto: CreateStartupDto) {
-    return 'This action adds a new startup';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createStartupDto: CreateStartupDto) {
+    return await this.prisma.startup.create({
+      data:{
+        ...createStartupDto,
+      }
+    });
   }
 
-  findAll() {
-    return `This action returns all startup`;
+  async findAll() {
+    return await this.prisma.startup.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} startup`;
+  async findOne(id: number) {
+    return await this.prisma.startup.findUnique({
+      where: {
+        idStartup: id
+      }
+    });
   }
 
-  update(id: number, updateStartupDto: UpdateStartupDto) {
-    return `This action updates a #${id} startup`;
+  async update(id: number, data: UpdateStartupDto) {
+    return await this.prisma.startup.update({
+      where: {
+        idStartup: id,
+      },
+      data
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} startup`;
+  async remove(id: number) {
+    return await this.prisma.startup.delete({
+      where: {
+        idStartup: id
+      }
+    });
   }
 }
